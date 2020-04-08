@@ -1,0 +1,3 @@
+rootProject.name='FireKookie'
+include ':app'
+include ':app:firekookie'

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "256732630746",
+    "firebase_url": "https://firekookie-75578.firebaseio.com",
+    "project_id": "firekookie-75578",
+    "storage_bucket": "firekookie-75578.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256732630746:android:032619b7f8dd18bd041fe3",
+        "android_client_info": {
+          "package_name": "com.jikook.firekookie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256732630746-m2l3uqs4ao33gkrd64asoig4roah5kmu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJ7sQfs5sx9NTjpvLdf1MpAVXR-P4sv7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256732630746-m2l3uqs4ao33gkrd64asoig4roah5kmu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
