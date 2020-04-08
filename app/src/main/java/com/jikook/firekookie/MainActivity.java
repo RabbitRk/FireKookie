@@ -1,24 +1,14 @@
 package com.jikook.firekookie;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.kogo.firekookie.KookieInit;
 import com.kogo.firekookie.OnKookieComplete;
 import com.kogo.firekookie.OnKookieListener;
@@ -26,19 +16,13 @@ import com.kogo.firekookie.OnKookieNested;
 import com.kogo.firekookie.OnKookieSnap;
 import com.kogo.firekookie.OnKookieUpdate;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
-
-import static android.content.ContentValues.TAG;
-//import static com.kogo.firekookie.KookieInit.AUTO_KEY;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private static final String TAG = "rkd";
     EditText t1, t2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,32 +38,41 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         Log.i(TAG, "onStart: ");
 
-        KookieInit init = new KookieInit(this);
+        KookieInit init = new KookieInit();
+
+        /* you can directly call the function via class name
+         * KookieInit.<function_name>()
+         * */
+
+        /*When new child is manipulated under the parent
+        * You can call the single parent or else just give the path Eg. Users/username of the child
+        * on which you are gonna add a ChildEventListener
+        * */
 
         init.childListener("User", new OnKookieListener() {
             @Override
             public void onAdded(DataSnapshot result, String child) {
-                Log.i(TAG, "onAdded: "+result.toString()+"   "+child);
+                Log.i(TAG, "onAdded: " + result.toString() + "   " + child);
             }
 
             @Override
             public void onChanged(DataSnapshot result, String child) {
-                Log.i(TAG, "onChanged: "+result.toString()+"   "+child);
+                Log.i(TAG, "onChanged: " + result.toString() + "   " + child);
             }
 
             @Override
             public void onRemoved(DataSnapshot result) {
-                Log.i(TAG, "onRemoved: "+result.toString());
+                Log.i(TAG, "onRemoved: " + result.toString());
             }
 
             @Override
             public void onMoved(DataSnapshot result, String child) {
-                Log.i(TAG, "onMoved: "+result.toString()+"   "+child);
+                Log.i(TAG, "onMoved: " + result.toString() + "   " + child);
             }
 
             @Override
             public void onCancelled(String child) {
-                Log.i(TAG, "onCancelled: "+child);
+                Log.i(TAG, "onCancelled: " + child);
             }
         });
     }
@@ -97,104 +90,134 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void testcode(View view) {
-//        Log.i(TAG, "onCreate: ");
-//        KookieInit kr = new KookieInit(this);
-//        String test1 = t1.getText().toString();
-//        String test2 = t2.getText().toString();
-//        HashMap<String, Object> map = new HashMap<>();
-//        map.put("id", test1);
-//        map.put("name", test2);
-        DatabaseReference  reference = FirebaseDatabase.getInstance().getReference();
 
-        Query myTopPostsQuery = reference.child("User").child("user_id").limitToFirst(1);
-        myTopPostsQuery.addChildEventListener(new ChildEventListener() {
+        KookieInit kr = new KookieInit();
+
+        String test1 = t1.getText().toString();
+        String test2 = t2.getText().toString();
+
+        //Sample HashMap
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", test1);
+        map.put("name", test2);
+
+        kr.fetchParent("User", new OnKookieSnap() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.i(TAG, "onChildAdded: "+dataSnapshot.toString());
+            public void onComplete(DataSnapshot result) {
+                for (DataSnapshot snapshot : result.getChildren()) {
+                    Post user = snapshot.getValue(Post.class);
+
+                    Log.i(TAG, "onComplete: " + snapshot.child("name"));
+                }
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onError(String result) {
+                Log.i(TAG, "onError: " + result);
             }
         });
 
-//        kr.fetchParent("User", new OnKookieSnap() {
-//            @Override
-//            public void onComplete(DataSnapshot result) {
-//                for (DataSnapshot snapshot : result.getChildren()){
-//                    Post user =  snapshot.getValue(Post.class);
-//
-//                    Log.i(TAG, "onComplete: "+snapshot.child("name"));
-//                }
-//            }
-//            @Override
-//            public void onError(String result) {
-//                Log.i(TAG, "onError: "+result);
-//            }
-//        });
+        /*
+        * Generate a unique key for the child
+        * */
+        kr.parentChild(map, "User", new OnKookieComplete() {
+            @Override
+            public void onComplete(String result) {
+                Toast.makeText(MainActivity.this, "Completed", Toast.LENGTH_SHORT).show();
+            }
 
-//        kr.parentChild(map, "User", new OnKookieComplete() {
-//            @Override
-//            public void onComplete(String result) {
-//                Toast.makeText(MainActivity.this, "Completed", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onError(String result) {
-//                Log.i(TAG, "onError: "+result);
-//                Toast.makeText(MainActivity.this, "Error ", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//          kr.fetchChild("User", "user_id", new OnKookieSnap() {
-//              @Override
-//              public void onComplete(DataSnapshot result) {
-//                  Log.i(TAG, "onComplete: "+result.toString());
-//              }
-//
-//              @Override
-//              public void onError(String result) {
-//
-//              }
-//          });
+            @Override
+            public void onError(String result) {
+                Log.i(TAG, "onError: " + result);
+                Toast.makeText(MainActivity.this, "Error ", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        /*
+         * User defined key for the child
+         * */
+        kr.parentChild(map, "User", "User1", new OnKookieComplete() {
+            @Override
+            public void onComplete(String result) {
+                Toast.makeText(MainActivity.this, "Completed", Toast.LENGTH_SHORT).show();
+            }
 
-//        User user = new User("kumar", "bob");
-//
-//        kr.nestedUpdate(user.to_map(), "User", "user_id", "username", new OnKookieNested() {
-//
-//            @Override
-//            public void onNested(String result) {
-//                Toast.makeText(MainActivity.this, "Nested", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onError(String result) {
-//                Toast.makeText(MainActivity.this, "Not updated", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+            @Override
+            public void onError(String result) {
+                Log.i(TAG, "onError: " + result);
+                Toast.makeText(MainActivity.this, "Error ", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        /*
+        * Updated the child fields.
+        * Rest of the fields will remain the same.
+        * */
+        kr.childUpdate(map, "User", "user_name", new OnKookieUpdate() {
+            @Override
+            public void onUpdate(String result) {
+                Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onError(String result) {
+                Log.i(TAG, "onError: " + result);
+                Toast.makeText(MainActivity.this, "Error ", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        /*
+         * Get data from the parent using child node
+        * */
+        kr.fetchChild("User", "user_id", new OnKookieSnap() {
+            @Override
+            public void onComplete(DataSnapshot result) {
+                Log.i(TAG, "onComplete: " + result.toString());
+                Toast.makeText(MainActivity.this, "Completed", Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onError(String result) {
+                Log.i(TAG, "onError: " + result);
+                Toast.makeText(MainActivity.this, "Error ", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        /*
+        * Setting data to the child node. Eg. User have two phone numbers
+        * */
+        kr.nestedChild(map, "User", "user_name", "address", new OnKookieNested() {
+            @Override
+            public void onNested(String result) {
+                Toast.makeText(MainActivity.this, "Nested child added", Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onError(String result) {
+                Toast.makeText(MainActivity.this, "Error ", Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "onError: " + result);
+            }
+        });
+
+        /*
+        * Updating the nested fields
+        * */
+
+        //Refer this Modal class too
+        User user = new User("balaji", "kogo");
+
+        kr.nestedUpdate(user.to_map(), "User", "user_id", "username", new OnKookieNested() {
+
+            @Override
+            public void onNested(String result) {
+                Toast.makeText(MainActivity.this, "Nested", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(String result) {
+                Toast.makeText(MainActivity.this, "Not updated", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
