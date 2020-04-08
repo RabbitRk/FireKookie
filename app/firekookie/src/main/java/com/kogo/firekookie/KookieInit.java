@@ -17,7 +17,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
-
 public class KookieInit {
 
     private static final String TAG = "FireKookie";

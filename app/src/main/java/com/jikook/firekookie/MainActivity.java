@@ -45,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
          * */
 
         /*When new child is manipulated under the parent
-        * You can call the single parent or else just give the path Eg. Users/username of the child
-        * on which you are gonna add a ChildEventListener
-        * */
+         * You can call the single parent or else just give the path Eg. Users/username of the child
+         * on which you are gonna add a ChildEventListener
+         * */
 
         init.childListener("User", new OnKookieListener() {
             @Override
@@ -118,8 +118,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /*
-        * Generate a unique key for the child
-        * */
+         * Generate a unique key for the child
+         * */
         kr.parentChild(map, "User", new OnKookieComplete() {
             @Override
             public void onComplete(String result) {
@@ -150,9 +150,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /*
-        * Updated the child fields.
-        * Rest of the fields will remain the same.
-        * */
+         * Updated the child fields.
+         * Rest of the fields will remain the same.
+         * */
         kr.childUpdate(map, "User", "user_name", new OnKookieUpdate() {
             @Override
             public void onUpdate(String result) {
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*
          * Get data from the parent using child node
-        * */
+         * */
         kr.fetchChild("User", "user_id", new OnKookieSnap() {
             @Override
             public void onComplete(DataSnapshot result) {
@@ -184,8 +184,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /*
-        * Setting data to the child node. Eg. User have two phone numbers
-        * */
+         * Setting data to the child node. Eg. User have two phone numbers
+         * */
         kr.nestedChild(map, "User", "user_name", "address", new OnKookieNested() {
             @Override
             public void onNested(String result) {
@@ -200,8 +200,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /*
-        * Updating the nested fields
-        * */
+         * Updating the nested fields
+         * */
 
         //Refer this Modal class too
         User user = new User("balaji", "kogo");
@@ -218,7 +218,5 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Not updated", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 }
