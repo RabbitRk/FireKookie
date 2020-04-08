@@ -216,7 +216,7 @@ public class User {
  
 ## Author
 
-* **Balaji Rk** - *Initial work* - (https://github.com/RabbitRk) 
+* **Balaji Rk** - (https://github.com/RabbitRk) 
 
 ## License
 
