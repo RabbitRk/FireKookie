@@ -1,3 +1,6 @@
+[![](https://jitpack.io/v/RabbitRk/FireKookie.svg)](https://jitpack.io/#RabbitRk/FireKookie)
+
+
 # FireKookie
 
 Simplified callback functions for the Firebase realtime database. 
